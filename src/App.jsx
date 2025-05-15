@@ -1,8 +1,11 @@
 import './App.css'
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
-export default function LandingPage() {
+// Sticky Header component (shared across all pages)
+function StickyHeader() {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
@@ -11,20 +14,33 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="bg-black text-white min-h-screen w-full p-0 m-0">
-      {/* Sticky Header */}
-      <header className={`sticky top-0 bg-black p-4 z-50 w-full transition-shadow transition-border-b duration-300 ${scrolled ? 'header-outline header-scrolled' : ''}`}>
-        <nav className={`flex justify-between w-full px-8 transition-all duration-300 ${scrolled ? 'py-2 scale-105' : ''}`}>
-          <div className="text-xl font-bold">StartupName</div>
-          <ul className="flex gap-6 text-sm items-center">
-            <li className="hover:text-gray-400 cursor-pointer font-bold">Home</li>
-            <li className="hover:text-gray-400 cursor-pointer font-bold">Features</li>
-            <li className="hover:text-gray-400 cursor-pointer font-bold">Pricing</li>
-            <li className="hover:text-gray-400 cursor-pointer font-bold">Contact</li>
-          </ul>
-        </nav>
-      </header>
+    <header className={`sticky top-0 bg-black p-4 z-50 w-full transition-shadow transition-border-b duration-300 ${scrolled ? 'header-outline header-scrolled' : ''}`}>
+      <nav className={`flex justify-between w-full px-8 transition-all duration-300 ${scrolled ? 'py-2 scale-105' : ''}`}>
+        <div className="text-xl font-bold">StartupName</div>
+        <ul className="flex gap-6 text-sm items-center">
+          <li>
+            <Link to="/" className={`hover:text-gray-400 cursor-pointer font-bold${location.pathname === '/' ? ' underline' : ''}`}>Home</Link>
+          </li>
+          <li>
+            <Link to="/features" className={`hover:text-gray-400 cursor-pointer font-bold${location.pathname === '/features' ? ' underline' : ''}`}>Features</Link>
+          </li>
+          <li>
+            <Link to="/pricing" className={`hover:text-gray-400 cursor-pointer font-bold${location.pathname === '/pricing' ? ' underline' : ''}`}>Pricing</Link>
+          </li>
+          <li>
+            <Link to="/contact" className={`hover:text-gray-400 cursor-pointer font-bold${location.pathname === '/contact' ? ' underline' : ''}`}>Contact</Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
+}
 
+// Main landing page content as a component
+function LandingPageContent() {
+  return (
+    <div className="bg-black text-white min-h-screen w-full p-0 m-0">
+      <StickyHeader />
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center py-24 px-4 w-full min-h-[500px]">
         <h1 className="hero-gradient-outline text-7xl italic font-extrabold max-w-2xl animate-fade-in-down">
@@ -214,5 +230,141 @@ export default function LandingPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+// Features Page
+function FeaturesPage() {
+  return (
+    <div className="bg-black text-white min-h-screen w-full p-0 m-0">
+      <StickyHeader />
+      <section className="py-20 px-4 text-center">
+        <h1 className="text-5xl font-extrabold mb-6">Features</h1>
+        <p className="text-lg text-gray-300 mb-12">Discover the tools that make StartupName the best choice for modern teams.</p>
+        <div className="flex flex-wrap justify-center gap-8">
+          <div className="bg-gray-800 rounded-2xl p-8 w-80 shadow">
+            <h2 className="text-xl font-bold mb-2">Real-time Collaboration</h2>
+            <p className="text-gray-400">Work together with your team instantly, no matter where you are.</p>
+          </div>
+          <div className="bg-gray-800 rounded-2xl p-8 w-80 shadow">
+            <h2 className="text-xl font-bold mb-2">Automation</h2>
+            <p className="text-gray-400">Automate repetitive tasks and focus on what matters most.</p>
+          </div>
+          <div className="bg-gray-800 rounded-2xl p-8 w-80 shadow">
+            <h2 className="text-xl font-bold mb-2">Analytics</h2>
+            <p className="text-gray-400">Gain insights into your team's productivity and progress.</p>
+          </div>
+        </div>
+      </section>
+      <section className="bg-gray-900 py-16 px-4 text-center">
+        <h3 className="text-2xl font-bold mb-4 text-white">Integrations</h3>
+        <p className="text-gray-300 mb-6">Connect with your favorite tools: Slack, Google Drive, Zoom, and more.</p>
+        <div className="flex flex-wrap justify-center gap-6">
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Slack</span>
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Google Drive</span>
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Zoom</span>
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Trello</span>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// Pricing Page
+function PricingPage() {
+  return (
+    <div className="bg-black text-white min-h-screen w-full p-0 m-0">
+      <StickyHeader />
+      <section className="py-20 px-4 text-center">
+        <h1 className="text-5xl font-extrabold mb-6">Pricing</h1>
+        <p className="text-lg text-gray-300 mb-12">Flexible plans for every team size.</p>
+        <div className="flex flex-wrap justify-center gap-8">
+          <div className="bg-gray-800 rounded-2xl p-8 w-80 shadow">
+            <h2 className="text-xl font-bold mb-2">Starter</h2>
+            <p className="text-3xl font-extrabold mb-2">$0</p>
+            <p className="text-gray-400 mb-4">For individuals and small teams</p>
+            <ul className="text-gray-400 text-left mb-4">
+              <li>✔️ Unlimited projects</li>
+              <li>✔️ Real-time collaboration</li>
+              <li>✔️ Basic analytics</li>
+            </ul>
+            <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-md transition">Get Started</button>
+          </div>
+          <div className="bg-gray-800 rounded-2xl p-8 w-80 shadow border-2 border-purple-600">
+            <h2 className="text-xl font-bold mb-2">Pro</h2>
+            <p className="text-3xl font-extrabold mb-2">$19<span className="text-base font-normal">/mo</span></p>
+            <p className="text-gray-400 mb-4">For growing teams</p>
+            <ul className="text-gray-400 text-left mb-4">
+              <li>✔️ Everything in Starter</li>
+              <li>✔️ Advanced analytics</li>
+              <li>✔️ Automation tools</li>
+              <li>✔️ Priority support</li>
+            </ul>
+            <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-md transition">Start Free Trial</button>
+          </div>
+          <div className="bg-gray-800 rounded-2xl p-8 w-80 shadow">
+            <h2 className="text-xl font-bold mb-2">Enterprise</h2>
+            <p className="text-3xl font-extrabold mb-2">Custom</p>
+            <p className="text-gray-400 mb-4">For large organizations</p>
+            <ul className="text-gray-400 text-left mb-4">
+              <li>✔️ All Pro features</li>
+              <li>✔️ Dedicated support</li>
+              <li>✔️ Custom integrations</li>
+            </ul>
+            <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-md transition">Contact Sales</button>
+          </div>
+        </div>
+      </section>
+      <section className="bg-gray-900 py-16 px-4 text-center">
+        <h3 className="text-2xl font-bold mb-4 text-white">Compare Plans</h3>
+        <p className="text-gray-300 mb-6">See which plan is right for your team.</p>
+        <div className="flex flex-wrap justify-center gap-6">
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Unlimited Projects</span>
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Collaboration</span>
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Analytics</span>
+          <span className="bg-gray-800 px-6 py-3 rounded-lg text-gray-200 font-semibold">Support</span>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// Contact Page
+function ContactPage() {
+  return (
+    <div className="bg-black text-white min-h-screen w-full p-0 m-0">
+      <StickyHeader />
+      <section className="py-20 px-4 text-center">
+        <h1 className="text-5xl font-extrabold mb-6">Contact Us</h1>
+        <p className="text-lg text-gray-300 mb-12">We'd love to hear from you! Reach out with any questions or feedback.</p>
+        <form className="max-w-xl mx-auto bg-gray-800 rounded-2xl p-8 shadow space-y-6">
+          <input className="w-full p-3 rounded bg-gray-900 text-white" type="text" placeholder="Your Name" />
+          <input className="w-full p-3 rounded bg-gray-900 text-white" type="email" placeholder="Your Email" />
+          <textarea className="w-full p-3 rounded bg-gray-900 text-white" rows="4" placeholder="Your Message"></textarea>
+          <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-md text-lg shadow transition" type="submit">
+            Send Message
+          </button>
+        </form>
+      </section>
+      <section className="bg-gray-900 py-16 px-4 text-center">
+        <h3 className="text-2xl font-bold mb-4 text-white">Our Office</h3>
+        <p className="text-gray-300 mb-2">123 Startup Lane, Innovation City</p>
+        <p className="text-gray-300">Email: hello@startupname.com</p>
+      </section>
+    </div>
+  );
+}
+
+// Main App with routing
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPageContent />} />
+        <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Routes>
+    </Router>
   );
 }
